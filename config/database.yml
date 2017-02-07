@@ -6,6 +6,7 @@ default: &default
 
 development:
   <<: *default
+  host: localhost
   database: uahmaps-dev
   username: uahmaps
   password: uahmaps
@@ -15,12 +16,14 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  host: localhost
   database: uahmaps-test
   username: uahmaps
   password: uahmaps
 
 production:
   <<: *default
+  host: <%= ENV['DATABASE_HOST'] %>
   database: <%= ENV['DATABASE_NAME'] %>
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASS'] %>
