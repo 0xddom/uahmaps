@@ -1,6 +1,8 @@
 default: &default
-  adapter: postgresql
+  adapter: postgis
   pool: 5
+  schema_search_path: public
+  encoding: unicode
   timeout: 5000
   encoding: utf-8 
 
@@ -8,8 +10,8 @@ development:
   <<: *default
   host: localhost
   database: uahmaps-dev
-  username: uahmaps
-  password: uahmaps
+  username: railsapp
+  password: railsapp
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,9 +19,9 @@ development:
 test:
   <<: *default
   host: localhost
-  database: uahmaps-test
-  username: uahmaps
-  password: uahmaps
+  database: uahmaps-testing
+  username: railsapp
+  password: railsapp
 
 production:
   <<: *default
