@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   # Points of interest are read only
   resources :point_of_interest, only: [:index, :show]
+
+  root 'main_view#index'
 end
