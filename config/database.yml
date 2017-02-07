@@ -3,6 +3,7 @@ default: &default
   pool: 5
   schema_search_path: public
   encoding: unicode
+  postgis_extension: postgis
   timeout: 5000
   encoding: utf-8 
 
