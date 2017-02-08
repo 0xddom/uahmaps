@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-class Point
+class UserLocation
   constructor: (x, y) ->
     @x = x
     @y = y
@@ -11,5 +11,5 @@ user_location = null
 
 if 'geolocation' of navigator
   navigator.geolocation.getCurrentPosition (position) ->
-    user_location = new Point position.coords.longitude, position.coords.latitude
+    user_location = new UserLocation position.coords.longitude, position.coords.latitude
 

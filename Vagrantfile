@@ -24,8 +24,8 @@ Vagrant.configure(2) do |config|
     sudo -u postgres createdb -O railsapp uahmaps-testing
     sudo -u postgres createdb -O railsapp uahmaps-prod
 
-    echo "host all  all    0.0.0.0/0  md5" | sudo tee /etc/postgresql/9.5/main/pg_hba.conf
-    echo "listen_addresses='*'" | sudo tee /etc/postgresql/9.5/main/postgresql.conf
+    echo "host all  all    0.0.0.0/0  md5" | sudo tee -a /etc/postgresql/9.5/main/pg_hba.conf
+    echo "listen_addresses='*'" | sudo tee -a /etc/postgresql/9.5/main/postgresql.conf
 
     sudo service postgresql restart
 
