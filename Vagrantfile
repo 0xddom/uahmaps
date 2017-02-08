@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
     sudo apt-get install -y libgeos-dev libproj-dev nodejs
 
     sudo -u postgres psql --command 'create extension postgis;'
-    sudo -u postgres psql --command 'create user railsapp with superuser password \'railsapp\';'
+    sudo -u postgres psql --command "create user railsapp with superuser password 'railsapp';"
     sudo -u postgres createdb -O railsapp uahmaps-dev
     sudo -u postgres createdb -O railsapp uahmaps-testing
     sudo -u postgres createdb -O railsapp uahmaps-prod
@@ -32,15 +32,14 @@ Vagrant.configure(2) do |config|
     gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     curl -sSL https://get.rvm.io | bash -s stable
 
-    source /home/ubuntu/.rvm/scripts/rvm
-    rvm install ruby-2.4.0-rc1
+    source /etc/profile.d/rvm.sh
+    rvm use --default --install ruby-2.4.0-rc1
 
     cd /vagrant
     gem install bundler
     bundle install
 
     rake db:setup
-    rails g foundation:install
 
   SHELL
 end
