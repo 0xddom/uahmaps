@@ -1,3 +1,21 @@
+<div class="top-bar">
+    <div class="top-bar-left">
+        <ul class="menu">
+            <li class="menu-text">UAH Maps</li>
+            <li><input type="search" class="small" placeholder="Ir"</li>
+            <li>
+                <button id="center_on_user_location_button" type="button" class="button secondary small">
+                    <i class="fi-compass"></i></button>
+            </li>
+            <li>
+                <button type="button" class="button small secondary" >
+                    <i class="fi-heart"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <%= map(center: {
     latlng: [
         @points[0].location.longitude,

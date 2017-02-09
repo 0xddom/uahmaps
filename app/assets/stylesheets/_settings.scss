@@ -69,7 +69,8 @@ $global-margin: 1rem;
 $global-padding: 1rem;
 $global-weight-normal: normal;
 $global-weight-bold: bold;
-$global-radius: 0;
+//$global-radius: 0;
+$global-radius: 4px;
 $global-text-direction: ltr;
 $global-flexbox: false;
 $print-transparent-backgrounds: true;
@@ -373,7 +374,7 @@ $select-radius: $global-radius;
 $input-color: $black;
 $input-placeholder-color: $medium-gray;
 $input-font-family: inherit;
-$input-font-size: rem-calc(16);
+$input-font-size: rem-calc(13);
 $input-font-weight: $global-weight-normal;
 $input-background: $white;
 $input-background-focus: $white;
@@ -613,7 +614,8 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-$topbar-background: $light-gray;
+//$topbar-background: $light-gray;
+$topbar-background: rgba(230, 230, 230, 0.7);
 $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 0.5rem 1rem 0.5rem 0;
 $topbar-input-width: 200px;
