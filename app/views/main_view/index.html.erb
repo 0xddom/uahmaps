@@ -5,11 +5,11 @@
             <li><input type="search" class="small" placeholder="Ir"</li>
             <li>
                 <button id="center_on_user_location_button" type="button" class="button secondary small">
-                    <i class="fi-compass"></i></button>
+                    <i class="fi-compass top-bar-icon"></i></button>
             </li>
             <li>
                 <button type="button" class="button small secondary" >
-                    <i class="fi-heart"></i>
+                    <i class="fi-heart top-bar-icon"></i>
                 </button>
             </li>
         </ul>
@@ -18,9 +18,10 @@
 
 <%= map(center: {
     latlng: [
-        @points[0].location.longitude,
-        @points[0].location.latitude ],
+        @default_location.longitude,
+        @default_location.latitude ],
     zoom: 18,
-    },
+  },
+  markers: @markers
 ) %>
 
