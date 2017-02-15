@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'rgeo'
-gem 'leaflet-rails'
+gem 'leaflet-rails', '~> 0.7.7'
 gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
 

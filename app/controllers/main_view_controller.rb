@@ -16,8 +16,7 @@ class MainViewController < ApplicationController
     points.map do |point|
       {
         latlng: [point.location.longitude, point.location.latitude],
-        #popup: point.name
-        , imagePath: ''
+        popup: point.name,
       }
     end
   end

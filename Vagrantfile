@@ -35,11 +35,11 @@ Vagrant.configure(2) do |config|
     source /etc/profile.d/rvm.sh
     rvm use --default --install ruby-2.4.0-rc1
 
-    cd /vagrant
-    gem install bundler
-    bundle install
+    #cd /vagrant
+    #gem install bundler
+    #bundle install
 
-    rake db:setup
+    #rake db:setup
 
   SHELL
 end
