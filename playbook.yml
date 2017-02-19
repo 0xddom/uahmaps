@@ -1,0 +1,118 @@
+---
+- hosts: all
+  sudo: yes
+  sudo_user: root
+  vars:
+    ruby_version: "2.3.0"
+    rvm_path: "/usr/local/rvm/gems/ruby-{{ ruby_version }}/bin:/usr/local/rvm/gems/ruby-{{ ruby_version }}@global/bin:/usr/local/rvm/rubies/ruby-{{ ruby_version }}/bin:/usr/local/rvm/bin"
+  tasks:
+    - name: Update apt-cache
+      apt: update_cache=yes
+    - name: Install packages
+      apt: name={{item}} state=present
+      with_items:
+        - postgresql-server-dev-9.5
+        - postgis
+        - postgresql-9.5-postgis-2.2
+        - libgeos-dev
+        - libproj-dev
+        - nodejs
+        - curl
+        - gnupg2
+        - python-psycopg2
+    - name: Create postgresql user for rails app
+      sudo: yes
+      sudo_user: postgres
+      postgresql_user:
+        name: railsapp
+        password: railsapp
+        role_attr_flags: SUPERUSER
+    - name: Create uahmaps-dev database
+      sudo: yes
+      sudo_user: postgres
+      postgresql_db:
+        name: uahmaps-dev
+        owner: railsapp
+    - name: Create uahmaps-testing database
+      sudo: yes
+      sudo_user: postgres
+      postgresql_db:
+        name: uahmaps-testing
+        owner: railsapp
+    - name: Create uahmaps-prod database
+      sudo: yes
+      sudo_user: postgres
+      postgresql_db:
+        name: uahmaps-prod
+        owner: railsapp
+    - name: Make postgres listen to 0.0.0.0
+      lineinfile:
+        dest: /etc/postgresql/9.5/main/pg_hba.conf
+#        regexp: '^host'
+        line: 'host all  all    0.0.0.0/0  md5'
+    - name: Make postgres listen to all addresses
+      lineinfile:
+        dest: /etc/postgresql/9.5/main/postgresql.conf
+#        regexp: '^listen_addresses='
+        line: "listen_addresses='*'"
+    - name: Restart postgresql
+      service:
+        name: postgresql
+        state: restarted
+    - name: Append rvm path to environment
+      lineinfile: >
+        dest=/etc/environment
+        state=present backrefs=yes
+        regexp='PATH=(["]*)((?!.*?{{rvm_path}}).*?)(["]*)$'
+        line="PATH=\1\2:{{rvm_path}}\3"
+    - name: Ensure that GPG key for RVM is installed
+      command: gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+      args:
+        creates: /root/.gnupg/secring.gpg
+    - name: Ensure that RVM is installed
+      shell: curl -L get.rvm.io | bash -s stable
+      args:
+        creates: /usr/local/rvm
+    - name: Ensure that ruby is installed
+      command: "rvm install {{ ruby_version }}"
+      args:
+        creates: "/usr/local/rvm/gems/ruby-{{ ruby_version }}"
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Set default version of ruby with rvm
+      command: "rvm alias create default ruby-{{ ruby_version }}"
+      args:
+        creates: /usr/local/rvm/config/alias
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Install bundler
+      shell: gem install bundler
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Install app dependecies
+      shell: bundle install
+      args:
+        chdir: /vagrant
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Precompile assets
+      shell: rake assets:precompile
+      args:
+        chdir: /vagrant
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Setup the databse
+      shell: rake db:setup
+      args:
+        chdir: /vagrant
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Seed the initial data
+      shell: rake db:seed
+      args:
+        chdir: /vagrant
+      environment:
+        PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+        
+    
+      
