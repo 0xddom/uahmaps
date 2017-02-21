@@ -2,6 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+ROUTER_HOST = 'http://router.project-osrm.org'
+METHOD = '/route/v1/car/'
+
 USER_MARKER_RADIUS = 3
 USER_MARKER_OPTIONS =
   stroke: false,
@@ -49,10 +52,60 @@ L.map = (id, options) ->
     created_maps[id] = new map_factory id, options
   created_maps[id]
 
+centerOnLocation = (lon, lat) ->
+        L.map('map').setView [lat, lon]
+
 centerOnUserLocation = ->
   if user_location
-      L.map('map').setView [user_location.lat, user_location.lon]
+     centerOnLocation user_location.lon, user_location.lat
+
+buildQuery = (from, to) ->
+        #from.lat = 0
+        #from.lon = 0
+        q = "#{ROUTER_HOST}#{METHOD}#{from.lat},#{from.lon};#{to.lat},#{to.lon}?geometries=geojson"
+        console.log q
+        q
+
+buildLatLon = (location) ->
+        new L.LatLng location[0], location[1]
+
+last_polyline = undefined
+
+removeLastPolylineIfExists = ->
+        console.log 'Removing'
+
+printP = (p) ->
+        console.log "(#{p[0]}, #{p[1]})"
+
+paintRoute = (route) ->
+        map = L.map 'map'
+        console.log route
+        printP p for p in route
+        c.addTo map for c in (L.circle [p[0], p[1]], 3, { stroke: false, fillOpacity: 1 } for p in route)
+        points = buildLatLon p for p in route
+        polyline = new L.Polyline points,
+                color: 'green',
+                weight: 30,
+                opacity: 1,
+                smoothFactor: 1
+
+        removeLastPolylineIfExists()
+        last_polyline = polyline
+        polyline.addTo map
+        centerOnLocation route[0][1], route[0][0]
+
+handleOSRMResult = (geom) ->
+        paintRoute geom.coordinates
+#        $.get "/polylines/decode.json?polyline=#{geom}", (data) ->
+#                paintRoute data
+
+@onClickGotoButton = (lon, lat) ->
+        console.log 'Clicked with coords: (', lat, lon, ')'
+        console.log 'Going from coords: (', user_location.lat, user_location.lon, ')'
+        $.get buildQuery({ lat: user_location.lat, lon: user_location.lon}, { lat: lat, lon: lon }), (data) ->
+                handleOSRMResult data.routes[0].geometry
 
 $ ->
   L.map('map').zoomControl.setPosition 'bottomleft'
   $('#center_on_user_location_button').click centerOnUserLocation
+

@@ -35,6 +35,7 @@ gem 'rgeo'
 gem 'leaflet-rails', '~> 0.7.7'
 gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
+gem 'polylines'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

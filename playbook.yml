@@ -85,6 +85,11 @@
         creates: /usr/local/rvm/config/alias
       environment:
         PATH: "{{ rvm_path }}:{{ ansible_env.PATH }}"
+    - name: Add user ubuntu to rvm group
+      user:
+        name: ubuntu
+        groups: rvm
+        append: yes
     - name: Install bundler
       shell: gem install bundler
       environment:

@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   resources :point_of_interest, only: [:index, :show]
 
   root 'main_view#index'
+
+  get '/polylines/decode', to: 'polyline#decode'
 end

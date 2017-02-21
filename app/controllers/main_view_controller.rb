@@ -21,15 +21,15 @@ class MainViewController < ApplicationController
     end
   end
 
-	def _create_popup(point)
+  def _create_popup(point)
 <<POPUP.gsub(/\n/, '')
-			#{point.name}
-			<br/><br/><br/>
-			<ul class="align-right menu">
-				<li><button class="button small secondary"><i class="fi-heart"></i></button></li>
-				<li><button class="button small secondary"><i class="fi-marker"></i></button></li>
-			</ul>
+    #{point.name}
+    <br/><br/><br/>
+    <ul class="align-right menu">
+	<li><button class="button small secondary"><i class="fi-heart"></i></button></li>
+	<li><button class="button small secondary" onclick="onClickGotoButton(#{point.location.latitude},#{point.location.longitude})"><i class="fi-marker"></i></button></li>
+    </ul>
 
 POPUP
-	end
+  end
 end
