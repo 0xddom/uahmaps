@@ -108,7 +108,18 @@ handleOSRMResult = (geom) ->
         $.get buildQuery({ lat: user_location.lat, lon: user_location.lon}, { lat: lat, lon: lon }), (data) ->
                 handleOSRMResult data.routes[0].geometry
 
+#@toggleFav = (user_id, point_id) ->
+#        console.log "User #{user_id} wants to add #{point_id}"
+
+setRouteToSchool = (id) ->
+        if id != "-1"
+                $.get "/point_of_interest/#{id}.json", (data) ->
+                        onClickGotoButton data.location.lat, data.location.lon
+
 $ ->
   L.map('map').zoomControl.setPosition 'bottomleft'
   $('#center_on_user_location_button').click centerOnUserLocation
+
+  $('#schools').change (ev) ->
+          setRouteToSchool ev.target.value
 

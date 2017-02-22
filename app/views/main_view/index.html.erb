@@ -2,18 +2,33 @@
     <div class="top-bar-left">
         <ul class="menu">
             <li class="menu-text">UAH Maps</li>
-            <li><input type="search" class="small" placeholder="Ir"/></li>
+            <!-- <li><input type="search" class="small" placeholder="Ir"/></li>-->
+	    <li><select id="schools">
+		<option value="-1" >Selecciona una facultad</option>
+		<% @points.each do |point| %>
+		    <option value="<%= point.id %>"><%= point.name %></option>
+		<% end %>
+	    </select></li>
             <li>
                 <button id="center_on_user_location_button" type="button" class="button secondary small">
                     <i class="fi-compass top-bar-icon"></i></button>
             </li>
-            <li>
+            <!-- <li>
                 <button type="button" class="button small secondary" >
                     <i class="fi-heart top-bar-icon"></i>
                 </button>
-            </li>
+            </li>-->
         </ul>
     </div>
+<!--<div class="top-bar-right">
+	<ul class="menu">
+	    <% if @user.is_guest %>
+		<li><a href="<%= url_for :user_session %>" class="button secondary">Login</a></li>
+	    <% else %>
+		<li><%= @user.name %></li>
+	    <% end %>
+	</ul>
+    </div>-->
 </div>
 
 <%= map(center: {

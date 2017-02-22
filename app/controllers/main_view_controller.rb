@@ -1,9 +1,11 @@
-class MainViewController < ApplicationController
+class MainViewController < AuthenticatedController
   def index
-    points = PointOfInterest.all
+    @user = current_or_guest_user
+    
+    @points = PointOfInterest.all
 
-    @default_location = _default_location points
-    @markers = _create_markers points
+    @default_location = _default_location @points
+    @markers = _create_markers @points
   end
 
   private
@@ -26,7 +28,8 @@ class MainViewController < ApplicationController
     #{point.name}
     <br/><br/><br/>
     <ul class="align-right menu">
-	<li><button class="button small secondary"><i class="fi-heart"></i></button></li>
+	<!--<li><button  class="button small secondary" onclick="toggleFav(#{@user.id},#{point.id})">
+               <i id="fav_#{point.id}" class="fi-heart"></i></button></li>-->
 	<li><button class="button small secondary" onclick="onClickGotoButton(#{point.location.latitude},#{point.location.longitude})"><i class="fi-marker"></i></button></li>
     </ul>
 
